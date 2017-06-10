@@ -1,6 +1,9 @@
 # Start Kafka
+Setup of [Kafka](http://docs.confluent.io/current/cp-docker-images/docs/tutorials/clustered-deployment.html).  
 Start Zookeeper cluster and Kafka cluster.
-```./startKafka.sh```
+```
+./startKafka.sh
+```
 
 Create a topic:
 ```

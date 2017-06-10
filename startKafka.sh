@@ -55,9 +55,9 @@ docker run -d \
     -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:39092 \
     confluentinc/cp-kafka:3.2.1
 
- docker run -d \
-     --net=host \
-     --name=kafka-3 \
-     -e KAFKA_ZOOKEEPER_CONNECT=localhost:22181,localhost:32181,localhost:42181 \
-     -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:49092 \
-     confluentinc/cp-kafka:3.2.1
+docker run -d \
+    --net=host \
+    --name=kafka-3 \
+    -e KAFKA_ZOOKEEPER_CONNECT=localhost:22181,localhost:32181,localhost:42181 \
+    -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:49092 \
+    confluentinc/cp-kafka:3.2.1

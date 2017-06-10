@@ -1,0 +1,2 @@
+# Start Kafka
+```./startKafka.sh```

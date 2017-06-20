@@ -61,3 +61,59 @@ docker run -d \
     -e KAFKA_ZOOKEEPER_CONNECT=zk-1:22181,zk-2:32181,zk-3:42181 \
     -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-3:49092 \
     confluentinc/cp-kafka:3.2.1
+
+docker stop schema-registry && docker rm schema-registry
+
+docker run -d \
+    --net=hackathon \
+    --name=schema-registry \
+    -p 8081:8081 \
+    -e SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zk-1:22181,zk-2:32181,zk-3:42181 \
+    -e SCHEMA_REGISTRY_HOST_NAME=schema-registry \
+    -e SCHEMA_REGISTRY_LISTENERS=http://schema-registry:8081 \
+    -e SCHEMA_REGISTRY_DEBUG=true \
+    confluentinc/cp-schema-registry:3.2.1
+
+
+docker stop kafka-rest && docker rm kafka-rest
+
+docker run -d \
+    --net=hackathon \
+    --name=kafka-rest \
+    -p 8082:8082 \
+    -e KAFKA_REST_ZOOKEEPER_CONNECT=zk-1:22181,zk-2:32181,zk-3:42181 \
+    -e KAFKA_REST_LISTENERS=http://kafka-rest:8082 \
+    -e KAFKA_REST_SCHEMA_REGISTRY=http://schema-registry:8081 \
+    -e KAFKA_REST_HOST_NAME=kafka-rest \
+    confluentinc/cp-kafka-rest:3.2.1
+
+docker stop kafka-manager && docker rm kafka-manager
+
+docker run -d \
+    --net=hackathon \
+    -p 9000:9000 \
+    --name=kafka-manager \
+    -e ZK_HOSTS=zk-1:22181,zk-2:32181,zk-3:42181 \
+    -e APPLICATION_SECRET=letmein sheepkiller/kafka-manager
+
+
+docker stop schema-registry-ui && docker rm schema-registry-ui
+
+docker run -d \
+    --net=hackathon \
+     --name=schema-registry-ui \
+     -p 8000:8000 \
+     -e SCHEMAREGISTRY_URL=http://schema-registry:8081 \
+     -e PROXY=true \
+     landoop/schema-registry-ui
+
+
+docker stop kafka-topic-ui && docker rm kafka-topic-ui
+
+docker run -d \
+    --net=hackathon \
+     --name=kafka-topic-ui \
+     -p 8001:8000 \
+     -e KAFKA_REST_PROXY_URL=http://kafka-rest:8082 \
+     -e PROXY=true \
+     landoop/kafka-topics-ui

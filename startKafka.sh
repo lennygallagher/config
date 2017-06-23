@@ -74,7 +74,6 @@ docker run -d \
     -e SCHEMA_REGISTRY_DEBUG=true \
     confluentinc/cp-schema-registry:3.2.1
 
-
 docker stop kafka-rest && docker rm kafka-rest
 
 docker run -d \
@@ -87,15 +86,6 @@ docker run -d \
     -e KAFKA_REST_HOST_NAME=kafka-rest \
     confluentinc/cp-kafka-rest:3.2.1
 
-docker stop kafka-manager && docker rm kafka-manager
-
-docker run -d \
-    --net=hackathon \
-    -p 9000:9000 \
-    --name=kafka-manager \
-    -e ZK_HOSTS=zk-1:22181,zk-2:32181,zk-3:42181 \
-    -e APPLICATION_SECRET=letmein sheepkiller/kafka-manager
-
 
 docker stop schema-registry-ui && docker rm schema-registry-ui
 
@@ -107,7 +97,6 @@ docker run -d \
      -e PROXY=true \
      landoop/schema-registry-ui
 
-
 docker stop kafka-topic-ui && docker rm kafka-topic-ui
 
 docker run -d \
@@ -117,3 +106,15 @@ docker run -d \
      -e KAFKA_REST_PROXY_URL=http://kafka-rest:8082 \
      -e PROXY=true \
      landoop/kafka-topics-ui
+
+
+docker stop kafka-manager && docker rm kafka-manager
+
+docker run -d \
+    --net=hackathon \
+    -p 9000:9000 \
+    --name=kafka-manager \
+    -e ZK_HOSTS=zk-1:22181,zk-2:32181,zk-3:42181 \
+    -e APPLICATION_SECRET=letmein sheepkiller/kafka-manager
+
+
